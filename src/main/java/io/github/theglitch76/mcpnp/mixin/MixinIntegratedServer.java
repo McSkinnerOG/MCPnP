@@ -3,6 +3,9 @@ package io.github.theglitch76.mcpnp.mixin;
 import com.dosse.upnp.UPnP;
 import io.github.theglitch76.mcpnp.MCPnP;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.GameMenuScreen;
+import net.minecraft.client.gui.screen.OpenToLanScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.GameMode;
@@ -15,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(IntegratedServer.class)
-public abstract class MixinIntegratedServer {
+public class MixinIntegratedServer {
 
     @Final
     @Shadow
@@ -25,26 +28,15 @@ public abstract class MixinIntegratedServer {
     private int lanPort;
 
     @Inject(at = @At("HEAD"), method = "openToLan")
-    public void beforeOpenToLan(GameMode gameMode, boolean cheats, int port, CallbackInfoReturnable<Boolean> cir) {
-        if (!UPnP.isUPnPAvailable()) {
-            client.inGameHud.getChatHud().addMessage(new TranslatableText("mcpnp.upnp.failed.unavailable"));
-            return;
-        }
-        if (UPnP.isMappedTCP(port)) {
-            client.inGameHud.getChatHud().addMessage(new TranslatableText("mcpnp.upnp.failed.mapped"));
-            return;
-        }
-        MCPnP.LOGGER.info("Opening port " + port + " via UPnP");
-        if (!UPnP.openPortTCP(port)) {
-            client.inGameHud.getChatHud().addMessage(new TranslatableText("mcpnp.upnp.failed"));
-        }
-        client.inGameHud.getChatHud().addMessage(new TranslatableText("mcpnp.upnp.success"));
-
+    public void beforeOpenToLan(GameMode gameMode, boolean cheatsAllowed, int port, CallbackInfoReturnable<Boolean> cir) {
 
     }
 
     @Inject(at = @At("HEAD"), method = "stop")
-    public void beforeStop(boolean boolean_1, CallbackInfo ci) {
+    public void beforeStop(boolean bl, CallbackInfo ci) {
+    	if(lanPort == -1) {
+    		return;
+	    }
         MCPnP.LOGGER.info("Closing UPnP port " + lanPort);
         if (!UPnP.closePortTCP(lanPort)) {
             MCPnP.LOGGER.warn("Failed to close port " + lanPort + "! Was it opened in the first place?");

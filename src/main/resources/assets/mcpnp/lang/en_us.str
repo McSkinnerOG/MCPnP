@@ -1,0 +1,16 @@
+//// Libaddict
+
+// Gui Switches
+gui.mcpnp.useupnp: Automatically Port Forward
+
+// Lecture
+gui.mcpnp.lecture.l1: UPnP is a tool that will automatically
+gui.mcpnp.lecture.l2: port forward the port you have selected.
+gui.mcpnp.lecture.l3: This is not supported on all routers,
+gui.mcpnp.lecture.l4: and will allow *anyone* to connect to your world.
+gui.mcpnp.lecture.l5: Are you sure you want to continue?
+
+chat.mcpnp.invalidport: You failed to select a port! Picked %s instead.
+
+chat.mcpnp.failed: Failed to open port %s with UPnP for reason: %s
+chat.mcpnp.success: Successfully opened port %s with UPnP

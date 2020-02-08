@@ -16,7 +16,7 @@
   "environment": "client",
   "entrypoints": {
     "main": [
-      "io.github.theglitch76.mcpnp.MCPNP"
+      "io.github.theglitch76.mcpnp.MCPnP"
     ]
   },
   "mixins": [
@@ -24,7 +24,7 @@
   ],
 
   "requires": {
-    "fabricloader": ">=0.4.0"
+    "fabricloader": ">=0.7.8"
   },
   "suggests": {
   },
